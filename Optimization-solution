@@ -8,6 +8,28 @@ Precompute the maximum pairwise deliciousness for non-restricted ranges.
 Dynamic Programming:
 Use dynamic programming to compute the best possible cuts for each restricted range
 
+SAMPLE TEST:
+
+INPUT:
+
+5
+
+3 5 2 1 4
+
+1 1 1 1 1
+
+2
+
+1 3
+
+2 2
+
+OUTPUT:
+
+6
+
+8
+
 
 Program :
 
