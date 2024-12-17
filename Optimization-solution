@@ -1,0 +1,67 @@
+Optimization Ideas
+
+Segment Tree for Range Queries:
+Use a segment tree to compute the maximum deliciousness efficiently.
+Precompute the maximum pairwise deliciousness for non-restricted ranges.
+
+
+Dynamic Programming:
+Use dynamic programming to compute the best possible cuts for each restricted range
+
+
+Program :
+
+def maximum_deliciousness(n, A, B, queries):
+    # Precompute prefix sums of edge lengths
+    edge_sum = [0] * (n + 1)
+    for i in range(1, n + 1):
+        edge_sum[i] = edge_sum[i - 1] + B[i - 1]
+    
+    # Total length of the circular polygon
+    total_length = edge_sum[n]
+    
+    def get_edge_sum(u, v):
+        """Get the sum of edges between vertex u and v (inclusive, circular)."""
+        if u <= v:
+            return edge_sum[v] - edge_sum[u]
+        else:
+            return total_length - (edge_sum[u] - edge_sum[v])
+    
+    results = []
+    
+    for l, r in queries:
+        # Determine the restricted vertices
+        restricted = set()
+        if l <= r:
+            restricted.update(range(l, r + 1))
+        else:
+            restricted.update(range(r, n + 1))
+            restricted.update(range(1, l + 1))
+        
+        # Find the maximum deliciousness excluding restricted vertices
+        max_deliciousness = 0
+        for u in range(1, n + 1):
+            if u in restricted:
+                continue
+            for v in range(u, n + 1):
+                if v in restricted:
+                    continue
+                edge_sum_between = get_edge_sum(u - 1, v - 1)
+                deliciousness = edge_sum_between + A[u - 1] + A[v - 1]
+                max_deliciousness = max(max_deliciousness, deliciousness)
+        
+        results.append(max_deliciousness)
+    
+    return results
+
+# Input reading
+n = int(input())
+A = list(map(int, input().split()))
+B = list(map(int, input().split()))
+q = int(input())
+queries = [tuple(map(int, input().split())) for _ in range(q)]
+
+# Process queries and print results
+results = maximum_deliciousness(n, A, B, queries)
+for res in results:
+    print(res)
