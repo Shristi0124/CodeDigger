@@ -1,4 +1,4 @@
-Optimization Ideas
+Optimization Ideas Explaination
 
 Segment Tree for Range Queries:
 Use a segment tree to compute the maximum deliciousness efficiently.
@@ -31,7 +31,7 @@ OUTPUT:
 8
 
 
-Program :
+Solution:
 
 def maximum_deliciousness(n, A, B, queries):
     # Precompute prefix sums of edge lengths
