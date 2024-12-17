@@ -33,57 +33,53 @@ OUTPUT:
 
 Program :
 
-def maximum_deliciousness(n, A, B, queries):
-    # Precompute prefix sums of edge lengths
-    edge_sum = [0] * (n + 1)
-    for i in range(1, n + 1):
-        edge_sum[i] = edge_sum[i - 1] + B[i - 1]
-    
-    # Total length of the circular polygon
-    total_length = edge_sum[n]
-    
-    def get_edge_sum(u, v):
-        """Get the sum of edges between vertex u and v (inclusive, circular)."""
-        if u <= v:
-            return edge_sum[v] - edge_sum[u]
-        else:
-            return total_length - (edge_sum[u] - edge_sum[v])
-    
-    results = []
-    
-    for l, r in queries:
-        # Determine the restricted vertices
-        restricted = set()
-        if l <= r:
-            restricted.update(range(l, r + 1))
-        else:
-            restricted.update(range(r, n + 1))
-            restricted.update(range(1, l + 1))
-        
-        # Find the maximum deliciousness excluding restricted vertices
-        max_deliciousness = 0
-        for u in range(1, n + 1):
-            if u in restricted:
-                continue
-            for v in range(u, n + 1):
-                if v in restricted:
-                    continue
-                edge_sum_between = get_edge_sum(u - 1, v - 1)
-                deliciousness = edge_sum_between + A[u - 1] + A[v - 1]
-                max_deliciousness = max(max_deliciousness, deliciousness)
-        
-        results.append(max_deliciousness)
-    
-    return results
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+using namespace std;
 
-# Input reading
-n = int(input())
-A = list(map(int, input().split()))
-B = list(map(int, input().split()))
-q = int(input())
-queries = [tuple(map(int, input().split())) for _ in range(q)]
+// Function to calculate the edge sum between two vertices in a circular graph
+int get_edge_sum(int u, int v, const vector<int>& prefix_sum, int total_length) {
+    if (u <= v) {
+        return prefix_sum[v] - prefix_sum[u];
+    } else {
+        return total_length - (prefix_sum[u] - prefix_sum[v]);
+    }
+}
 
-# Process queries and print results
-results = maximum_deliciousness(n, A, B, queries)
-for res in results:
-    print(res)
+vector<int> maximum_deliciousness(int n, const vector<int>& A, const vector<int>& B, const vector<pair<int, int>>& queries) {
+    // Precompute prefix sums for edges
+    vector<int> prefix_sum(n + 1, 0);
+    for (int i = 1; i <= n; ++i) {
+        prefix_sum[i] = prefix_sum[i - 1] + B[i - 1];
+    }
+    int total_length = prefix_sum[n];
+
+    // Result array
+    vector<int> results;
+
+    // Process each query
+    for (const auto& query : queries) {
+        int l = query.first, r = query.second;
+
+        // Determine restricted vertices using modular arithmetic
+        vector<bool> restricted(n + 1, false);
+        if (l <= r) {
+            for (int i = l; i <= r; ++i) restricted[i] = true;
+        } else {
+            for (int i = r; i <= n; ++i) restricted[i] = true;
+            for (int i = 1; i <= l; ++i) restricted[i] = true;
+        }
+
+        // Use two-pointer approach to find maximum deliciousness
+        int max_deliciousness = 0;
+        int curr_sum = 0, start = 0;
+
+        for (int i = 1; i <= n; ++i) {
+            if (restricted[i]) continue; // Skip restricted vertices
+            for (int j = i; j <= n; ++j) {
+                if (restricted[j]) break; // Skip restricted vertices
+                int edge_sum = get_edge_sum(i, start++];
+            }
+        }
