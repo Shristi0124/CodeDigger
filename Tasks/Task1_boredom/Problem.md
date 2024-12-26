@@ -9,7 +9,7 @@ i and 1 for i = n.
 
 Rishabh does not like cherry. So he asked Aaryan to cut a piece of cake which does not have cherries.
 
-To earn points, Aaryan decided to give Rishabh the cake piece with maximum possible deliciousness.
+To earn points, shristi decided to give Rishabh the cake piece with maximum possible deliciousness.
 
 Aaryan will select two vertices and cut the cake piece between the two vertices.
 The deliciousness of a cake piece is defined as [ (sum of edges on path between the two vertices which Aaryan will cut) + sum of the deliciousness at the vertices which Aaryan will cut] .
